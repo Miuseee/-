@@ -5,6 +5,7 @@ import less from 'less'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import store from './store/index.js'
+// import eventBus from 'vue3-eventbus'
 
 const app = createApp(App)
 
@@ -15,6 +16,7 @@ const app = createApp(App)
 
 
 app.use(Router).use(store).use(ElementPlus).use(less)
+// app.use(eventBus)
 // app.use(ElementPlus)
 app.mount('#app')
 

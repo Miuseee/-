@@ -14,7 +14,7 @@
 <script  scoped>
 import { ref } from 'vue'
 // import { login } from '../../../request/api'
-// import router from '../../../router/index'
+import router from '../../../router/index'
 import { useStore } from 'vuex'
 export default {
     name: 'LoginCard',
@@ -22,15 +22,15 @@ export default {
         let username = ref('')
         let password = ref('')
         const store = useStore()
-        let pat = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,20}$/;
+        let pat = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{5,20}$/;
         const fail = () => {
             console.log('123')
         }
         const loginn = () => {
 
-            let judge = pat.test(username.value)
+            let judge = pat.test(password.value)
             if (!judge) {
-                alert('密码必须为6~10位的数字+字母；字母+特殊字符，特殊字符+数字')
+                alert('密码必须为5~10位的数字+字母；字母+特殊字符，特殊字符+数字')
                 username.value = ''
                 password.value = ''
                 return
@@ -43,7 +43,7 @@ export default {
                     username: username.value,
                     password: password.value
                 }).then(
-                    // router.push('/home')
+                    router.push('/home')
                 )
 
             }

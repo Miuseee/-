@@ -32,7 +32,7 @@ export default createStore({
                     })
                         .then(res => {
                             localStorage.setItem('realName', res.data.data.realName)
-                            // console.log(res.data.data.realName)
+                            // console.log(res)
                         })
 
                 }
@@ -43,5 +43,8 @@ export default createStore({
                 // console.log(res.data.code);
             })
         }
+    },
+    modules: {
+
     }
 })

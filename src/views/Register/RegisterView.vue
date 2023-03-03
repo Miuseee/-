@@ -7,10 +7,10 @@
                     <el-input v-model="username" class="forminput" />
                 </el-form-item>
                 <el-form-item class="formitem" label="密码" prop="name">
-                    <el-input type="password" class="forminput" />
+                    <el-input v-model="password" type="password" class="forminput" />
                 </el-form-item>
                 <el-form-item class="formitem" label="确认密码" prop="name">
-                    <el-input type="password" class="forminput" />
+                    <el-input v-model="passwordcheck" type="password" class="forminput" />
                 </el-form-item>
                 <!-- <el-form-item class="formitem" label="性别">
                     <el-select class="formselect" size="small" v-model="choose" placeholder="性别">
@@ -27,28 +27,47 @@
 </template>
 <script  scoped>
 import { ref } from 'vue'
-
+import { registerAdmin } from '@/request/api'
 export default {
 
     name: 'RegisterCard',
     setup() {
         let username = ref('')
+        let password = ref('')
+        let passwordcheck = ref('')
         let choose = ref('男')
         const labelPosition = ref('center')
         const small = ref('small')
+        let pat = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{5,20}$/;
         // const rules = reactive({
         //     username: [{ required: true, trigger: 'blur', message: '用户名不能为空' }],
 
         // })
         const submit = () => {
-
+            let judge = pat.test(password.value)
+            if (!judge) {
+                alert('密码必须为5~10位的数字+字母；字母+特殊字符，特殊字符+数字')
+                username.value = ''
+                password.value = ''
+                return
+            }
+            if (password.value === passwordcheck.value) {
+                registerAdmin({
+                    userName: username.value,
+                    userPwd: password.value
+                }).then(res => {
+                    console.log(res.data);
+                })
+            }
+            console.log(username.value, password.value, passwordcheck.value)
         }
         return {
             choose,
             labelPosition,
             small,
             username,
-            // rules,
+            password,
+            passwordcheck,
             submit
         }
     }

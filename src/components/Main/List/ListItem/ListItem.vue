@@ -23,66 +23,65 @@
                 <td class="td5">{{ list.expressAbility }}</td>
                 <td class="td5">{{ list.thinkingAbility }}</td>
                 <td class="td5">{{ list.executeAbility }}</td>
-                <td><button @click="deleteInfo(index)" class="button1 delete">删除</button><button
+                <td><button @click="deleteInfo(index)" class="button1 delete">删除</button><button @click="show(list)"
                         class="button1 modify">修改</button>
                 </td>
             </tr>
         </tbody>
     </table>
 </template>
-
 <script>
 import { ref } from 'vue'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, onBeforeUnmount } from 'vue'
 import { getStuInfo, delStuInfo } from '../../../../request/api'
 import NProgress from 'nprogress'
-
 import 'nprogress/nprogress.css'
 
-
 export default {
-
     name: 'ListItem',
-    setup() {
-        let arr = ref([])
-        onBeforeMount(() => {
+    setup(state, context) {
+        onBeforeUnmount(() => {
 
+        })
+        let arr = ref([])
+        let send = ref([])
+        onBeforeMount(() => {
             getStuInfo().then(res => {
                 NProgress.start();
                 if (res.status === 200) {
-                    console.log('成功获取数据');
+                    // console.log('成功获取数据');
                     arr.value = res.data.data
                     NProgress.done()
-
+                    // console.log(arr.value);
                 }
             })
-                ;
         })
+
         const deleteInfo = (index) => {
             delStuInfo({
                 id: arr.value[index].stuId,
             }).then(res => {
+                NProgress.start();
                 if (res.status === 200)
                 // console.log(res);
                 {
+                    NProgress.done()
                     arr.value.splice(index, 1)
                 }
             })
         }
-        const addInfo = () => {
-            arr.value.push({
-                id: 4,
-                name: 'zyk',
-                sex: '男',
-                tel: '120',
-                address: 'tshua'
-            })
+        const show = (list) => {
+            send.value = list
+            context.emit('refresh')
+
         }
         return {
             arr,
-            // info,
             deleteInfo,
-            addInfo
+            show,
+            // sendId,
+            send,
+
         }
     }
 }

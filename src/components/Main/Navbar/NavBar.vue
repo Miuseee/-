@@ -5,14 +5,16 @@
                 <el-avatar @mouseenter="onEnterTd" class="image"
                     src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
             </div>
-
             <el-divider direction="vertical" class="vertical" />
             <span class="text-large font-600 mr-3">新生用户画像分析管理系统</span>
+            <div class="search">
+                <SearchStudent />
+            </div>
             <span class="login">
-                <router-link to="/login">登录</router-link>
+                <!-- <router-link to="/login">登录</router-link> -->
+                {{ ' 欢迎回来' }}
             </span>
-
-            <span class="register"><router-link to="/register">注册</router-link></span>
+            <!-- <span class="register"><router-link to="/register">注册</router-link></span> -->
         </div>
         <Transition>
             <PersonCard @mouseleave="onLeaveTd" v-if="show" />
@@ -21,26 +23,38 @@
 </template>
 <script>
 import PersonCard from '../PersonCard/PersonCard.vue';
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import SearchStudent from '../SearchStudent/SearchStudent.vue'
 export default {
     name: 'NavbarView',
     components: {
-        PersonCard
+        PersonCard,
+        SearchStudent
     },
     setup() {
+        onMounted(() => {
+            console.log(1);
+        })
+        // const reload = inject('reload')
+        let realName = ref('')
+        realName = localStorage.getItem('realName')
         let show = ref(false)
         //鼠标移入展示信息卡片
         const onEnterTd = () => {
             show.value = true
+
+            // console.log();
         }
         //鼠标移出隐藏信息卡片
         const onLeaveTd = () => {
             show.value = false
+
         }
         return {
             onEnterTd,
             onLeaveTd,
-            show
+            show,
+            realName
         }
     }
 
@@ -65,7 +79,7 @@ span {
 }
 
 .login {
-    flex: 1;
+    flex: 2;
     font-size: 12px;
     text-align: center;
     line-height: 25px;
@@ -74,7 +88,7 @@ span {
 .login:hover {
     font-weight: bold;
     color: black;
-    border-bottom: 1px gray solid;
+    // border-bottom: 1px gray solid;
 }
 
 .register {
@@ -95,6 +109,10 @@ span {
     height: 25px;
 
     margin-left: 10px;
+}
+
+.search {
+    flex: 1
 }
 
 .navbar {
