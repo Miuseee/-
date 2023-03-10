@@ -1,70 +1,72 @@
 <template>
-    <table>
-        <thead>
-            <tr>
-                <th>姓名</th>
-                <th>性别</th>
-                <th>年龄</th>
-                <th class="td4">地址</th>
-                <th class="td5">学习能力</th>
-                <th class="td5">表达能力</th>
-                <th class="td5">思辨能力</th>
-                <th class="td5">执行能力</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(list, index ) in arr" :key="list.id">
-                <td>{{ list.stuName }}</td>
-                <td>{{ list.sex }}</td>
-                <td>{{ list.age }}</td>
-                <td class="td4">{{ list.address }}</td>
-                <td class="td5">{{ list.learningAbility }}</td>
-                <td class="td5">{{ list.expressAbility }}</td>
-                <td class="td5">{{ list.thinkingAbility }}</td>
-                <td class="td5">{{ list.executeAbility }}</td>
-                <td><button @click="deleteInfo(index)" class="button1 delete">删除</button><button @click="show(list)"
-                        class="button1 modify">修改</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div>
+        <div class="refresh">
+            <button class="button2" ref="button" @click="refresh">刷新</button>
+        </div>
+        <button class="export" @click="exportList(arr)">导出</button>
+        <table ref="table" id="table">
+            <thead>
+                <tr>
+                    <th ref="th">姓名</th>
+                    <th ref="th">性别</th>
+                    <th ref="th">年龄</th>
+                    <th ref="th" class="td4">地址</th>
+                    <th ref="th" class="td5">学习能力</th>
+                    <th ref="th" class="td5">表达能力</th>
+                    <th ref="th" class="td5">思辨能力</th>
+                    <th ref="th" class="td5">执行能力</th>
+                    <th ref="th">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(list, index ) in arr" :key="list.id">
+                    <td>{{ list.stuName }}</td>
+                    <td ref="td">{{ list.sex }}</td>
+                    <td>{{ list.age }}</td>
+                    <td class="td4">{{ list.address }}</td>
+                    <td class="td5">{{ list.learningAbility }}</td>
+                    <td class="td5">{{ list.expressAbility }}</td>
+                    <td class="td5">{{ list.thinkingAbility }}</td>
+                    <td class="td5">{{ list.executeAbility }}</td>
+                    <td><button @click="deleteInfo(index)" class="button1 delete">删除</button><button @click="show(list)"
+                            class="button1 modify">修改</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 <script>
 import { ref } from 'vue'
-import { onBeforeMount, onBeforeUnmount } from 'vue'
+import { onBeforeMount } from 'vue'
 import { getStuInfo, delStuInfo } from '../../../../request/api'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-
+import store from '@/store'
+import * as XLSX from 'xlsx'
 export default {
     name: 'ListItem',
     setup(state, context) {
-        onBeforeUnmount(() => {
-
-        })
         let arr = ref([])
         let send = ref([])
+        let th = ref()
+        let button = ref()
+        let table = ref()
         onBeforeMount(() => {
             getStuInfo().then(res => {
                 NProgress.start();
                 if (res.status === 200) {
-                    // console.log('成功获取数据');
                     arr.value = res.data.data
                     NProgress.done()
-                    // console.log(arr.value);
                 }
             })
         })
-
         const deleteInfo = (index) => {
             delStuInfo({
                 id: arr.value[index].stuId,
             }).then(res => {
                 NProgress.start();
-                if (res.status === 200)
-                // console.log(res);
-                {
+                if (res.status === 200) {
                     NProgress.done()
                     arr.value.splice(index, 1)
                 }
@@ -73,72 +75,167 @@ export default {
         const show = (list) => {
             send.value = list
             context.emit('refresh')
+        }
+        const updateList = () => {
+            NProgress.start();
+            setTimeout(() => {
+                arr.value = []
+                store.state.Type.stuArr.forEach((value, index,) => {
+                    arr.value.push(store.state.Type.stuArr[index])
+                })
+                NProgress.done()
+            }, 500)
+        }
+        const changeTable = () => {
+            table.value.style.height = '55%'
+            table.value.style.transform = 'translateY(0)'
+            button.value.style.display = 'block'
+        }
+        const minusTable = () => {
+            table.value.style.height = '100px'
+            table.value.style.transform = 'translateY(400px)'
+            button.value.style.display = 'none'
+        }
+        const refresh = () => {
+            getStuInfo().then(res => {
+                NProgress.start();
+                if (res.status === 200) {
+                    arr.value = res.data.data
+                    NProgress.done()
+                }
+            })
+        }
 
+        const exportList = (arr) => {
+            let tableData = [
+                ['姓名', '性别', '年龄', '地址', '学习能力', "表达能力", "思辨能力", "执行能力"]
+            ]
+            arr.forEach((item, index) => {
+                let rowData = []
+                rowData = [
+                    item.stuName,
+                    item.sex,
+                    item.age,
+                    item.address,
+                    item.learningAbility,
+                    item.expressAbility,
+                    item.thinkingAbility,
+                    item.executeAbility,
+                ]
+                tableData.push(rowData)
+            })
+            let ws = XLSX.utils.aoa_to_sheet(tableData)
+            let wb = XLSX.utils.book_new()
+            XLSX.utils.book_append_sheet(wb, ws, '学生信息')
+            XLSX.writeFile(wb, '学生信息.xlsx')
         }
         return {
             arr,
             deleteInfo,
             show,
-            // sendId,
+            th,
             send,
-
+            updateList,
+            table,
+            changeTable,
+            minusTable,
+            refresh,
+            button,
+            exportList
         }
     }
 }
 </script>
 
 <style lang="less" scoped>
-table {
-    display: block;
-    padding: 5px 10px;
+.refresh {
     position: absolute;
-    // margin-top: 50px;
-    max-height: 70%;
-    width: 100%;
-    // max-width: 70%;
-    overflow: scroll;
-    top: 30%;
-    // left: 20%;
-    font-size: 12px;
-    border: 1px solid #000000;
-    border-collapse: collapse;
+    display: block;
+    top: 48%;
+    left: 0.35%;
+    width: 30px;
+    height: 30px;
 }
 
+.button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    display: none;
+}
 
+.button2 {
+    border-radius: 50%;
+    width: 50px;
+    height: 40px;
+    font-size: 15px;
+    border: 2px solid white;
+    background-color: lightgray;
+    display: none;
+}
+
+.button2:active {
+    border: 1px solid white;
+}
+
+.button2:hover {
+    background-color: gray;
+}
+
+table {
+    display: block;
+    padding: 0px 10px;
+    position: absolute;
+    width: 95%;
+    height: 100px;
+    overflow: scroll;
+    top: 40%;
+    left: 3%;
+    font-size: 20px;
+    border-radius: 10px;
+    border-collapse: collapse;
+    transition: 1s;
+    transform: translateY(400px);
+}
+
+th:first-child {
+    border-radius: 9px 0 0 0;
+}
+
+th:last-child {
+    border-radius: 0 9px 0 0;
+}
 
 th,
 td {
-    // display: inline-block;
-    padding: 8px 25px;
+    padding: 10px 45px;
     width: 70px;
     text-align: center;
 }
 
 .td4 {
-    width: 80px;
+    width: 320px;
 }
 
 .td5 {
     width: 80px;
 }
 
-tr {
+tbody>tr:nth-child(odd) {
     /* display: block; */
+    background-color: whitesmoke;
+    opacity: 0.8;
 
-}
-
-tbody>tr {
-    border-bottom: 1px solid gray;
 }
 
 tbody>tr:hover {
-    background-color: grey;
+    background-color: lightgrey;
     transition: 0.2s;
 }
 
 .button1 {
     border: none;
-    // margin-right: 4px;
     width: 50px;
     height: 23px;
 }
@@ -175,5 +272,21 @@ tbody>tr:hover {
     border: 1px solid lightcyan;
     width: 49px;
     height: 22px;
+}
+
+.export {
+    position: absolute;
+    height: 40px;
+    width: 50px;
+    top: 55%;
+    left: 0.25%;
+    border-radius: 50%;
+    border: 2px solid gray;
+    background-color: lightgray(222, 207, 207);
+}
+
+.export:hover {
+    border: 2px solid lightgrey;
+    background-color: seashell;
 }
 </style>

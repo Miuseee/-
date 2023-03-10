@@ -5,25 +5,21 @@
             <Transition>
                 <AddStudent v-if="isshowed" @refresh="show" />
             </Transition>
-            <Transition name="move">
-                <ModifyStudent v-if="isshowed2" @get="getId" @refresh="invisible" :list="sendIdToList" />
-            </Transition>>
+            <keep-alive>
+                <Transition name="move">
+                    <ModifyStudent v-if="isshowed2" @get="getId" @refresh="invisible" :list="sendIdToList" />
+                </Transition>
+            </keep-alive>
             <div class="bc" v-if="isshowed3">
-
             </div>
-
         </div>
-        <button class="add" @click="add">addStudent</button>
-
     </div>
 </template>
-  
 <script>
 import { ref } from 'vue'
 import ListItem from './ListItem/ListItem.vue';
 import AddStudent from '../AddStudent/AddStudent.vue'
 import ModifyStudent from '../ModifyStudent/ModifyStudent.vue';
-// import { onMounted } from 'vue'
 export default {
     name: "ListView",
     components: {
@@ -32,11 +28,6 @@ export default {
         ModifyStudent
     },
     setup() {
-        // onMounted(() => {
-        const getId = () => {
-
-        }
-        // })
         const addStudent = ref()
         const isshowed = ref(false)
         const isshowed2 = ref(false)
@@ -52,20 +43,22 @@ export default {
         }
         const show2 = () => {
             sendIdToList.value = addStudent.value.send;
-            // console.log('id:', id);
             isshowed2.value = true
             isshowed3.value = true
         }
         const invisible = () => {
-            // console.log('123');
             isshowed2.value = false
             isshowed3.value = false
         }
-
-
-        // console.log(sendIdToList.value)
-        // return addStudent.value.send
-
+        const get1 = () => {
+            addStudent.value.updateList()
+        }
+        const changeTableHeight = () => {
+            addStudent.value.changeTable()
+        }
+        const minusTableHeight = () => {
+            addStudent.value.minusTable()
+        }
         return {
             add,
             addStudent,
@@ -75,8 +68,10 @@ export default {
             show,
             show2,
             invisible,
-            getId,
-            sendIdToList
+            sendIdToList,
+            get1,
+            changeTableHeight,
+            minusTableHeight
         }
     }
 }
@@ -86,7 +81,16 @@ export default {
 .list {
     height: 100%;
     width: 100%;
-    background-color: red;
+    background-color: transparent;
+}
+
+span {
+    position: absolute;
+    top: -10.5%;
+    left: -22.3%;
+    font-size: 30px;
+    transform: rotate(90deg) scaleY(2.5);
+    animation: shining 1s ease infinite;
 }
 
 .bc {
@@ -96,28 +100,6 @@ export default {
     width: 100%;
     background-color: black;
     opacity: 0.8;
-}
-
-.listview {
-    /* position: relative */
-    /* top: 0%; */
-    /* background-image: url('https://tse3-mm.cn.bing.net/th/id/OIP-C.wB95x5TeYHdYOSveaGyj5gHaEK?pid=ImgDet&rs=1'); */
-}
-
-.add {
-    position: absolute;
-    height: 5%;
-    top: 20%;
-    left: 3%;
-    padding: 5px 5px;
-    border: none;
-    border-radius: 10px;
-    z-index: 1;
-}
-
-.add:hover {
-    background-color: lightgrey;
-
 }
 
 .add:active {
@@ -137,7 +119,6 @@ export default {
 
 .move-enter-active,
 .move-leave-active {
-    /* transform: s,/cale(5); */
     transition: 0.5s ease-in-out;
 }
 
@@ -145,5 +126,18 @@ export default {
 .move-leave-to {
     opacity: 0;
     transform: translateX(30px);
+}
+
+@keyframes shining {
+    0% {
+        color: gray;
+    }
+
+    50% {}
+
+    100% {
+        color: white;
+
+    }
 }
 </style>

@@ -5,22 +5,18 @@
                 <el-input v-model="sizeForm.stu_name" />
             </el-form-item>
             <el-form-item class="input2" label="性别">
-                <!-- <el-select v-model="sizeForm.sex" placeholder="男/女"> -->
-                <!-- <el-option style="height:30px" label="男" value="男" />
-                    <el-option label="女" value="女" /> -->
                 <el-input v-model="sizeForm.sex" />
-                <!-- </el-select> -->
             </el-form-item>
             <el-form-item class="input" label="学号">
                 <el-input v-model="sizeForm.stu_number" />
             </el-form-item>
-            <el-form-item class="input" label="年龄">
+            <el-form-item class="input2" label="年龄">
                 <el-input placeholder="年龄" v-model="sizeForm.age" />
             </el-form-item>
             <el-form-item class="input" label="电话">
                 <el-input v-model="sizeForm.telephone" />
             </el-form-item>
-            <el-form-item class="input" label="家庭地址">
+            <el-form-item class="input" label="地址">
                 <el-input v-model="sizeForm.address" />
             </el-form-item>
             <el-form-item class="input" label="QQ">
@@ -34,18 +30,13 @@
     </div>
 </template>
 <script>
-import { ref, reactive, inject } from 'vue'
+import { ref, reactive } from 'vue'
 import { addStuInfo } from '@/request/api'
 export default {
     setup(props, context) {
-        // console.log();
-        // const emit = defineEmits(['refresh'])
-        // const ctx = useContext();
         const labelPosition = ref('left')
-        const reload = inject('reload')
         const size = ref('small')
         const sizeForm = reactive({
-            // stu_id: '1asd',
             stu_number: '',
             stu_name: '',
             age: '',
@@ -60,9 +51,7 @@ export default {
             execute_ability: '',
         })
         function onSubmit() {
-            console.log(sizeForm.stu_name)
             addStuInfo({
-                // stu_id: sizeForm.stu_id,
                 stuName: sizeForm.stu_name,
                 stuNumber: sizeForm.stu_number,
                 age: sizeForm.age,
@@ -73,10 +62,8 @@ export default {
                 permissions: sizeForm.permissions
             }).then(res => {
                 if (res.status === 200) {
-                    reload()
+                    alert('添加成功')
                 }
-
-                console.log(res);
             })
         }
         function onCancel() {
@@ -88,8 +75,6 @@ export default {
             sizeForm,
             onSubmit,
             onCancel
-
-
         }
     }
 
@@ -97,22 +82,21 @@ export default {
 </script>
 <style lang="less" scoped>
 .addstu {
-    // overflow: hidden;
     position: absolute;
     z-index: 1000;
-    height: 400px;
-    width: 300px;
-    top: 10%;
+    height: 500px;
+    width: 600px;
+    top: 20%;
     left: 30%;
-    background-color: red;
+    opacity: 0.9;
+    border-radius: 30px;
+    background-color: lightgray;
 }
 
-
-// /deep/ 
 /deep/ .input {
     position: absolute;
     top: 10%;
-    left: 5%;
+    left: 20%;
     // height: 10px;
 }
 
@@ -121,20 +105,25 @@ export default {
     height: 30px;
 }
 
-/deep/ .input2 {
-    position: absolute;
-    top: 20%;
-    left: 5%;
+.el-form-item__label {
+    height: 24px;
+    line-height: 24px;
+    font-size: 20px;
 }
 
+/deep/ .input2 {
+    position: absolute;
+    height: 30px;
+    top: 20%;
+    left: 20%;
+}
 
 /deep/ .el-input {
-
     position: absolute;
     top: 0%;
     left: 0%;
-    height: 20px;
-    width: 150px;
+    height: 30px;
+    width: 250px;
 }
 
 /deep/ .el-form-item {
@@ -179,5 +168,17 @@ export default {
 /deep/ .el-button+.el-button {
     // position: absolute;
     margin-left: 120px;
+}
+
+.button1 {
+    position: absolute;
+    height: 30px;
+    left: 140px;
+}
+
+.button2 {
+    position: absolute;
+    height: 30px;
+    left: 160px;
 }
 </style>

@@ -7,7 +7,7 @@ const request = axios.create({
 request.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token')
-        console.log(config.headers);
+        // console.log(config.headers);
         if (token) config.headers.token = `${token}`
         return config
     },
@@ -19,7 +19,7 @@ request.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.request.status === 500)
-            router.push('/login')
+            router.push('/')
         return Promise.reject(error)
     }
 )

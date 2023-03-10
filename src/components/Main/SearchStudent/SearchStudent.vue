@@ -1,5 +1,5 @@
 <template>
-    <div class="search-box">
+    <div class="search-box" ref="searchbox">
         <input v-model="search" class="search-txt" type="text" placeholder="Type to search" />
         <a class="search-btn" href="#">
             <i class="fas fa-search">
@@ -10,22 +10,26 @@
 </template>
 
 <script>
+import store from '@/store'
 import { ref } from 'vue'
-import { searchStuByName } from '@/request/api'
 export default {
-    setup() {
+    setup(a, ctx) {
         let search = ref('')
+        let searchbox = ref('')
         const onSubmit = () => {
-            searchStuByName({
-                stuName: search.value
-            }).then(res => {
-                console.log(res.data.data);
-            })
-            // console.log(search.value);
+            if (search.value === '') {
+                store.dispatch('getAllStuInfo')
+                ctx.emit('get2')
+            }
+            else {
+                ctx.emit('get2')
+                store.dispatch('UpdateStuInfo', search.value)
+            }
         }
         return {
             onSubmit,
-            search
+            search,
+            searchbox,
         }
     }
 }
@@ -42,29 +46,41 @@ body {
     /* display: flex; */
     flex: 1;
     margin: 0 10px;
-    position: fixed;
-    top: 3.5%;
-    left: 33%;
+    position: absolute;
+    top: 14%;
+    left: 34%;
     transform: translate(-50%, -50%);
-    background: #2f3640;
-    height: 15px;
+    background: linear-gradient(black, 80%, lightgray);
+    box-shadow: 0 0 30px 8px lightgray;
+    opacity: 0.9;
+    height: 35px;
     border-radius: 40px;
-    padding: 6px;
+    padding: 10px;
+    animation: upAndDown infinite 5s ease-in;
+}
+
+.search-box:after {
+    content: "搜索";
+    display: block;
+    position: absolute;
+    top: -32px;
+    left: 12px;
+    text-shadow: 1px 1px grey;
+    font-size: 15px;
+    width: 120px;
 }
 
 .search-btn {
-    /* color: #e84118; */
     font-style: 10px;
-    /* text-align: center; */
     float: right;
-    width: 15px;
-    height: 15px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     background: lightgray;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: 0.4s;
+    transition: 0.5s;
     text-decoration: none;
 }
 
@@ -74,19 +90,49 @@ body {
     outline: none;
     float: left;
     padding: 0;
-    color: white;
-    font-size: 12px;
-    transition: 0.4s;
+    color: black;
+    font-size: 20px;
+    transition: 0.5s;
     line-height: 15px;
     width: 0;
 }
 
+input {
+    height: 30px;
+}
+
+img {
+    /* position: absolute; */
+    /* top: 60%; */
+    /* left: 30%; */
+    width: 30px;
+    height: 30px;
+    padding: 0px 0px 15px;
+    /* margin-top: 10px; */
+    /* transform: translateX(-10%, 30px); */
+}
+
 .search-box:hover>.search-txt {
-    width: 120px;
+    width: 180px;
     padding: 0 6px;
 }
 
 .search-box:hover>.search-btn {
     background: white;
+}
+
+@keyframes upAndDown {
+    0% {
+        transform: translateY(0px)
+    }
+
+
+    50% {
+        transform: translateY(20px)
+    }
+
+    100% {
+        transform: translateY(0px)
+    }
 }
 </style>

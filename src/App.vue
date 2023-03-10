@@ -1,7 +1,6 @@
 
 <template>
   <div class="app">
-    <NavBar v-show="$route.meta.showHeader" />
     <router-view v-if="isRouterAlive" />
   </div>
 </template>
@@ -10,11 +9,9 @@
 
 import { nextTick, ref } from 'vue';
 import { provide } from 'vue';
-import NavBar from './components/Main/Navbar/NavBar.vue';
 export default {
   name: 'App',
   components: {
-    NavBar
   },
   setup() {
     const isRouterAlive = ref(true)
@@ -36,12 +33,5 @@ export default {
 * {
   margin: 0px;
   height: 100%;
-
-
 }
-
-// /deep/ .el-popper.is-pure {
-//   height: 100px;
-//   padding: 0;
-// }
 </style>

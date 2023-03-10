@@ -5,41 +5,52 @@
             <input class="usernameinput" v-model="username" type="text" name="username" placeholder="请输入用户名">
             <label class="password" for="password">Password</label>
             <input class="passwordinput" v-model="password" type="password" name="password" placeholder="请输入密码">
-            <el-button class="submit" round @Click="loginn">登录</el-button>
+            <label class="password2" for="password">Password</label>
+            <input class="passwordinput2" v-model="passwordcheck" type="password" name="password" placeholder="请输入密码">
+            <el-button class="submit" round @Click="loginn">注册</el-button>
             <!-- <router-link to='/register'></router-link> -->
-            <span><a @click="change">注册</a></span>
+            <span><a @click="change">登录</a></span>
         </div>
     </div>
 </template>
 <script  scoped>
 import { ref } from 'vue'
-import router from '../../../router/index'
-import { useStore } from 'vuex'
+import { registerAdmin } from '../../request/api'
 export default {
     name: 'LoginCard',
-    setup(p, ctx) {
+    setup(props, ctx) {
         let username = ref('')
         let password = ref('')
-        const store = useStore()
+        let passwordcheck = ref('')
         let pat = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{5,20}$/;
         const loginn = () => {
+            if (username.value === '' || password.value === '') {
+                alert('用户名和密码不能为空')
+                return
+            }
             let judge = pat.test(password.value)
-            if (!judge) {
+            if (password.value != passwordcheck.value) {
+                alert('两次密码不一致')
+                password.value = ''
+                passwordcheck.value = ''
+                return
+            } if (!judge) {
                 alert('密码必须为5~10位的数字+字母；字母+特殊字符，特殊字符+数字')
                 username.value = ''
                 password.value = ''
                 return
             }
-            if (username.value === '' || password.value === '')
-                alert('用户名和密码不能为空')
+
             else {
-                // console.log(username.value, password.value);
-                store.dispatch('loginn', {
-                    username: username.value,
-                    password: password.value
-                }).then(
-                    router.push('/home')
-                )
+                registerAdmin({
+                    userName: username.value,
+                    userPwd: password.value
+                }).then(res => {
+                    if (res.status === 200)
+                        alert('注册成功')
+                    ctx.emit('changeShow')
+                })
+
             }
         }
         const change = () => {
@@ -48,6 +59,7 @@ export default {
         return {
             username,
             password,
+            passwordcheck,
             loginn,
             change
         }
@@ -60,16 +72,11 @@ span {
     color: gray;
     position: absolute;
     cursor: pointer;
-    // top: 0;
-    // right: 5px;
-    // margin-left: -10px;
     font-weight: 3000;
     text-align: right;
-    // padding: 0px 5px;
     height: 70px;
     width: 70px;
     background: no-repeat url(https://img.alicdn.com/imgextra/i3/O1CN01yz6fEl1MwaRtkJyvf_!!6000000001499-55-tps-70-70.svg);
-    // background: no-repeat;
     transform: scale(1.2);
 }
 
@@ -129,19 +136,26 @@ input::-webkit-input-placeholder {
 .username {
     position: absolute;
     top: 25%;
-    font-size: 35px;
+    font-size: 25px;
 
 }
 
 .password {
     position: absolute;
-    top: 41%;
-    font-size: 35px;
+    top: 39%;
+    font-size: 25px;
+}
+
+.password2 {
+    position: absolute;
+    height: 10px;
+    top: 53%;
+    font-size: 25px;
 }
 
 .usernameinput {
     position: absolute;
-    top: 35%;
+    top: 33%;
     height: 25px;
     width: 200px;
     border-bottom: 2px solid lightgrey;
@@ -150,7 +164,16 @@ input::-webkit-input-placeholder {
 
 .passwordinput {
     position: absolute;
-    top: 50%;
+    top: 47%;
+    height: 25px;
+    width: 200px;
+    border-bottom: 2px solid lightgrey;
+    padding: 0 0 5px 0
+}
+
+.passwordinput2 {
+    position: absolute;
+    top: 60%;
     height: 25px;
     width: 200px;
     border-bottom: 2px solid lightgrey;
@@ -165,7 +188,9 @@ input::-webkit-input-placeholder {
 }
 
 .passwordinput:hover,
-.passwordinput:focus {
+.passwordinput:focus,
+.passwordinput2:hover,
+.passwordinput2:focus {
     transition: 0.5s;
     border-bottom: 2px solid red;
 
@@ -176,7 +201,7 @@ input::-webkit-input-placeholder {
     width: 80px;
     height: 40px;
     font-size: 20px;
-    top: 65%;
+    top: 70%;
     left: 15%;
     color: white;
     background-color: lightgray;
@@ -220,7 +245,8 @@ input::-webkit-input-placeholder {
     width: 680px;
     height: 480px;
     top: 18%;
-    left: 35.5%;
+    left: 40.5%;
+    // margin-right: 10px;
     /* linear-gradient() 函数用于创建一个线性渐变的 "图像"。 参数1:用角度值指定渐变的方向（或角度）  12点钟方向为0deg*/
     background: linear-gradient(235deg, rgb(239, 204, 147), #060c21, white);
 }

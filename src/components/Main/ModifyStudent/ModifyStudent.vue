@@ -5,11 +5,7 @@
                 <el-input v-model="sizeForm.stuName" />
             </el-form-item>
             <el-form-item prop="sex" class="input" label="性别">
-                <!-- <el-select v-model="sizeForm.sex" placeholder="男/女"> -->
-                <!-- <el-option style="height:30px" label="男" value="男" />
-                    <el-option label="女" value="女" /> -->
                 <el-input v-model="sizeForm.sex" />
-                <!-- </el-select> -->
             </el-form-item>
             <el-form-item prop="stuNumber" class="input" label="学号">
                 <el-input v-model="sizeForm.stuNumber" />
@@ -36,7 +32,7 @@
 
 <script>
 import { ref, reactive } from 'vue'
-import { onBeforeMount, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { updateStuInfo } from '@/request/api'
 export default {
     props: {
@@ -58,27 +54,17 @@ export default {
             thinking_ability: '',
             execute_ability: '',
         })
-        onBeforeMount(() => {
-
-        })
         onMounted(() => {
             context.emit('get')
-            // let stuId = props.stuId
-            console.log(props.list);
-            // findStuById({ stuId }).then(res => {
-            //     sizeForm.value = res.data.data
-            //     console.log('res', sizeForm.value.stuName);
-            // })
         })
-
         const labelPosition = ref('left')
         const onSubmit = () => {
             updateStuInfo({
                 sizeForm
-            }).then(res => {
-                console.log(res);
+            }).then((res) => {
+                if (res.data.code === 200);
+                alert('修改成功')
             })
-            // console.log(props.stuId);
         }
         const onCancel = () => {
             context.emit('refresh')
@@ -100,34 +86,39 @@ export default {
     position: absolute;
     top: 20%;
     left: 50%;
-    height: 300px;
-    width: 250px;
-    background-color: red;
+    height: 500px;
+    width: 350px;
+    background-color: lightgray;
+    opacity: 0.9;
+    border-radius: 30px;
     z-index: 1000;
 }
 
 /deep/ .input {
-    margin-top: 10px;
-    height: 18px;
-    width: 180px;
+    margin-top: 30px;
+    height: 38px;
+    width: 260px;
 }
 
 .el-form-item {
+    font-size: 20px;
     // position: absolute;
-    height: 18px;
+    height: 28px;
     margin-left: 30px;
 }
 
 .button1 {
     font-size: 12px;
-    height: 18px;
+    height: 25px;
     width: 50px;
+    margin-left: 20px;
 }
 
 
 .button2 {
     font-size: 12px;
-    height: 18px;
+    height: 25px;
     width: 50px;
+    margin-left: 60px;
 }
 </style>
