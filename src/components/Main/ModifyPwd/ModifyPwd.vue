@@ -39,7 +39,6 @@ export default {
         })
         const labelPosition = ref('left')
         const onSubmit = () => {
-            console.log(store.state);
             if (sizeForm.pwd !== store.state.password) {
                 alert('旧密码不符')
                 return
