@@ -6,8 +6,9 @@
             <label class="password" for="password">Password</label>
             <input class="passwordinput" v-model="password" type="password" name="password" placeholder="请输入密码">
             <label class="password2" for="password">Password</label>
-            <input class="passwordinput2" v-model="passwordcheck" type="password" name="password" placeholder="请输入密码">
-            <el-button class="submit" round @Click="loginn">注册</el-button>
+            <input class="passwordinput2" @keydown.enter="loginn" v-model="passwordcheck" type="password" name="password"
+                placeholder="请输入密码">
+            <el-button class="submit" round @click="loginn">注册</el-button>
             <!-- <router-link to='/register'></router-link> -->
             <span><a @click="change">登录</a></span>
         </div>
@@ -38,6 +39,7 @@ export default {
                 alert('密码必须为5~10位的数字+字母；字母+特殊字符，特殊字符+数字')
                 username.value = ''
                 password.value = ''
+                passwordcheck.value = ''
                 return
             }
 
@@ -46,6 +48,14 @@ export default {
                     userName: username.value,
                     userPwd: password.value
                 }).then(res => {
+                    console.log(res.data)
+                    if (res.data.status === false) {
+                        alert('用户名被占用')
+                        username.value = ''
+                        password.value = ''
+                        passwordcheck.value = ''
+                        return
+                    }
                     if (res.status === 200)
                         alert('注册成功')
                     ctx.emit('changeShow')

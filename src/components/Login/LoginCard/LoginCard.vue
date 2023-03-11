@@ -4,9 +4,9 @@
             <label class="username" for="username">UserName</label>
             <input class="usernameinput" v-model="username" type="text" name="username" placeholder="请输入用户名">
             <label class="password" for="password">Password</label>
-            <input class="passwordinput" v-model="password" type="password" name="password" placeholder="请输入密码">
-            <el-button class="submit" round @Click="loginn">登录</el-button>
-            <!-- <router-link to='/register'></router-link> -->
+            <input class="passwordinput" v-model="password" type="password" name="password" placeholder="请输入密码"
+                @keydown.enter="loginn">
+            <el-button class="submit" round @click="loginn">登录</el-button>
             <span><a @click="change">注册</a></span>
         </div>
     </div>
@@ -21,25 +21,21 @@ export default {
         let username = ref('')
         let password = ref('')
         const store = useStore()
-        let pat = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{5,20}$/;
         const loginn = () => {
-            let judge = pat.test(password.value)
-            if (!judge) {
-                alert('密码必须为5~10位的数字+字母；字母+特殊字符，特殊字符+数字')
-                username.value = ''
-                password.value = ''
-                return
-            }
+
             if (username.value === '' || password.value === '')
                 alert('用户名和密码不能为空')
             else {
-                // console.log(username.value, password.value);
                 store.dispatch('loginn', {
                     username: username.value,
-                    password: password.value
-                }).then(
-                    router.push('/home')
-                )
+                    password: password.value,
+                    error() {
+                        username.value = '',
+                            password.value = ''
+                    }
+                })
+
+
             }
         }
         const change = () => {
@@ -60,16 +56,11 @@ span {
     color: gray;
     position: absolute;
     cursor: pointer;
-    // top: 0;
-    // right: 5px;
-    // margin-left: -10px;
     font-weight: 3000;
     text-align: right;
-    // padding: 0px 5px;
     height: 70px;
     width: 70px;
     background: no-repeat url(https://img.alicdn.com/imgextra/i3/O1CN01yz6fEl1MwaRtkJyvf_!!6000000001499-55-tps-70-70.svg);
-    // background: no-repeat;
     transform: scale(1.2);
 }
 

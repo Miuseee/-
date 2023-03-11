@@ -33,5 +33,14 @@ export default {
 * {
   margin: 0px;
   height: 100%;
+  // overflow: hidden;
+}
+
+#nprogress .bar {
+  position: absolute !important;
+  background: red !important; //自定义颜色
+  // left: -100px !important;
+  // overflow: hidden !important;
+  // transform: translateX(-30px) !important;
 }
 </style>

@@ -90,7 +90,7 @@ export default {
 <style scope>
 .main {
     /* overflow: hidden; */
-    /* overflow: invisible; */
+
     height: 100%;
     background: linear-gradient(skyblue, 40%, #e3e0cf, 90%, lightyellow)
 }

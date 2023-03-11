@@ -1,6 +1,7 @@
 <template>
     <div class="search-box" ref="searchbox">
-        <input v-model="search" class="search-txt" type="text" placeholder="Type to search" />
+        <input v-model="search" @keydown.enter="onSubmit" ref="searchinput" class="search-txt" type="text"
+            placeholder="Type to search" />
         <a class="search-btn" href="#">
             <i class="fas fa-search">
                 <img @click="onSubmit" src="../../../../public/wxb搜索推广.png" alt="">
@@ -20,16 +21,20 @@ export default {
             if (search.value === '') {
                 store.dispatch('getAllStuInfo')
                 ctx.emit('get2')
+                // search.value = ''
             }
             else {
                 ctx.emit('get2')
                 store.dispatch('UpdateStuInfo', search.value)
+                // search.value = ''
             }
         }
+
         return {
             onSubmit,
             search,
             searchbox,
+
         }
     }
 }
@@ -43,7 +48,6 @@ body {
 }
 
 .search-box {
-    /* display: flex; */
     flex: 1;
     margin: 0 10px;
     position: absolute;
@@ -90,7 +94,7 @@ body {
     outline: none;
     float: left;
     padding: 0;
-    color: black;
+    color: gray;
     font-size: 20px;
     transition: 0.5s;
     line-height: 15px;
@@ -102,17 +106,17 @@ input {
 }
 
 img {
-    /* position: absolute; */
-    /* top: 60%; */
-    /* left: 30%; */
     width: 30px;
     height: 30px;
     padding: 0px 0px 15px;
-    /* margin-top: 10px; */
-    /* transform: translateX(-10%, 30px); */
 }
 
 .search-box:hover>.search-txt {
+    width: 180px;
+    padding: 0 6px;
+}
+
+.search-box>.search-txt:focus {
     width: 180px;
     padding: 0 6px;
 }

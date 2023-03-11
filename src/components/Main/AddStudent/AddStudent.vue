@@ -11,7 +11,7 @@
                 <el-input v-model="sizeForm.stu_number" />
             </el-form-item>
             <el-form-item class="input2" label="年龄">
-                <el-input placeholder="年龄" v-model="sizeForm.age" />
+                <el-input v-model="sizeForm.age" />
             </el-form-item>
             <el-form-item class="input" label="电话">
                 <el-input v-model="sizeForm.telephone" />
@@ -167,18 +167,27 @@ export default {
 
 /deep/ .el-button+.el-button {
     // position: absolute;
-    margin-left: 120px;
+    margin-left: 130px;
+
 }
 
 .button1 {
     position: absolute;
     height: 30px;
-    left: 140px;
+    left: 120px;
+    margin-top: 15px;
+    font-size: 20px;
 }
 
 .button2 {
     position: absolute;
     height: 30px;
-    left: 160px;
+    left: 150px;
+    margin-top: 15px;
+    font-size: 20px;
+}
+
+/deep/ .el-form-item--small .el-form-item__label {
+    font-size: 20px;
 }
 </style>

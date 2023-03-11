@@ -1,6 +1,6 @@
 <template>
     <div class="modify">
-        <el-form ref="form" :model="sizeForm.value" label-width="70px" :label-position="labelPosition" :size="size">
+        <el-form ref="form" :model="sizeForm.value" label-width="90px" :label-position="labelPosition" :size="size">
             <el-form-item prop="stuName" class="input" label="用户名">
                 <el-input v-model="sizeForm.userName" />
             </el-form-item>
@@ -32,7 +32,7 @@ export default {
     setup(props, context) {
         let sizeForm = reactive({
             userName: store.state.username,
-            userId: localStorage.getItem('userid'),
+            userId: localStorage.getItem('id'),
             pwd: '',
             newPwd: '',
             newPwd1: '',
@@ -82,9 +82,10 @@ export default {
     position: absolute;
     top: 20%;
     left: 5%;
-    height: 300px;
+    height: 380px;
     width: 280px;
     background-color: lightgray;
+    // font-size: 200px;
     opacity: 0.9;
     border-radius: 30px;
     z-index: 100000;
@@ -92,30 +93,38 @@ export default {
 }
 
 /deep/ .input {
-    margin-top: 30px;
-    height: 30px;
-    width: 200px;
+    margin-top: 35px;
+    // height: px;
+    width: 230px;
 }
 
 .el-form-item {
-    font-size: 20px;
-    // position: absolute;
-    height: 28px;
+
+    height: 32px;
     margin-left: 30px;
 }
 
 .button1 {
-    font-size: 12px;
-    height: 25px;
-    width: 50px;
-    margin-left: -10px;
+    font-size: 18px;
+    height: 28px;
+    width: 70px;
+    margin-left: -58px;
 }
 
 
 .button2 {
-    font-size: 12px;
-    height: 25px;
-    width: 50px;
+    font-size: 18px;
+    height: 28px;
+    width: 70px;
     margin-left: 20px;
+}
+
+.input1 {
+    margin-top: 20px;
+}
+
+/deep/ .el-form--label-left .el-form-item__label {
+    justify-content: flex-start;
+    font-size: 19px;
 }
 </style>

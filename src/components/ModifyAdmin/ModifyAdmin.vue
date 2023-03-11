@@ -1,6 +1,6 @@
 <template>
     <div class="modifyadmin">
-        <el-form :model="adminInfo.value" label-width="80px" label-position="left">
+        <el-form :model="adminInfo.value" label-width="90px" label-position="left">
             <el-form-item prop="realName" label="姓名">
                 <el-input v-model="adminInfo.realName" />
             </el-form-item>
@@ -101,8 +101,9 @@ export default {
 /deep/ .el-input {
     display: block;
     position: absolute;
-    height: 20px;
+    height: 30px;
     top: 0%;
+    font-size: 18px;
     // margin-bottom: 51px;
     width: 150px;
     margin: 0px auto;
@@ -110,17 +111,21 @@ export default {
 
 /deep/ .el-button:first-child {
     position: absolute;
-    height: 20px;
+    height: 30px;
     width: 70px;
-    left: -20%;
+    left: -34%;
     top: 30%;
 }
 
 /deep/ .el-button:last-child {
     position: absolute;
-    height: 20px;
+    height: 30px;
     width: 70px;
-    left: 20%;
+    left: 21%;
     top: 30%;
+}
+
+/deep/ .el-form--label-left .el-form-item__label {
+    font-size: 18px;
 }
 </style>

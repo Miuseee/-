@@ -1,5 +1,6 @@
 import axios from 'axios'
 import router from '../router/index'
+import NProgress from 'nprogress'
 const request = axios.create({
     baseURL: 'http://47.109.49.197:9090',
 
@@ -7,7 +8,6 @@ const request = axios.create({
 request.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token')
-        // console.log(config.headers);
         if (token) config.headers.token = `${token}`
         return config
     },
@@ -16,11 +16,12 @@ request.interceptors.request.use(
 
 
 request.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        if (error.request.status === 500)
-            router.push('/')
-        return Promise.reject(error)
-    }
+    (response) =>
+        response, (error) => {
+            if (error.request.status === 500)
+                router.push('/')
+            return Promise.reject(error)
+        }
+
 )
 export default request

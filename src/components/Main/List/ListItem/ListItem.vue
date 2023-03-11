@@ -54,9 +54,10 @@ export default {
         let table = ref()
         onBeforeMount(() => {
             getStuInfo().then(res => {
-                NProgress.start();
+
                 if (res.status === 200) {
                     arr.value = res.data.data
+                    // console.log(arr.value)
                     NProgress.done()
                 }
             })
@@ -83,8 +84,12 @@ export default {
                 store.state.Type.stuArr.forEach((value, index,) => {
                     arr.value.push(store.state.Type.stuArr[index])
                 })
+                if (arr.value.length === 0) {
+                    alert('暂无该学生信息')
+                    refresh()
+                }
                 NProgress.done()
-            }, 500)
+            }, 300)
         }
         const changeTable = () => {
             table.value.style.height = '55%'
@@ -105,22 +110,25 @@ export default {
                 }
             })
         }
-
         const exportList = (arr) => {
             let tableData = [
-                ['姓名', '性别', '年龄', '地址', '学习能力', "表达能力", "思辨能力", "执行能力"]
+                ['ID', '姓名', '学号', '性别', '年龄', '电话', 'QQ', '地址', '学习能力', "表达能力", "思辨能力", "执行能力"]
             ]
             arr.forEach((item, index) => {
                 let rowData = []
                 rowData = [
+                    item.stuId,
                     item.stuName,
+                    item.stuNumber,
                     item.sex,
                     item.age,
+                    item.telephone,
+                    item.qq,
                     item.address,
                     item.learningAbility,
                     item.expressAbility,
                     item.thinkingAbility,
-                    item.executeAbility,
+                    item.executeAbility
                 ]
                 tableData.push(rowData)
             })
@@ -155,6 +163,7 @@ export default {
     left: 0.35%;
     width: 30px;
     height: 30px;
+
 }
 
 .button {
@@ -288,5 +297,23 @@ tbody>tr:hover {
 .export:hover {
     border: 2px solid lightgrey;
     background-color: seashell;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px white(85, 72, 72, 0.2);
+    background: white;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background: rgba(157, 155, 162, 0.32);
+
 }
 </style>
