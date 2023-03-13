@@ -4,8 +4,8 @@
             <el-form-item prop="realName" label="姓名">
                 <el-input v-model="adminInfo.realName" />
             </el-form-item>
-            <el-form-item prop="sex" label="性别">
-                <el-input v-model="adminInfo.sex" />
+            <el-form-item prop="sexy" label="性别">
+                <el-input v-model="adminInfo.sexy" />
             </el-form-item>
             <el-form-item prop="telephone" label="联系方式">
                 <el-input v-model="adminInfo.telephone" />
@@ -31,10 +31,9 @@ export default {
             getAdminInfo({
                 userName
             }).then(res => {
-                console.log(res.data.data);
                 adminInfo.id = res.data.data.id
                 adminInfo.realName = res.data.data.realName
-                adminInfo.sex = res.data.data.sexy,
+                adminInfo.sexy = res.data.data.sexy,
                     adminInfo.telephone = res.data.data.telephone
                 adminInfo.age = res.data.data.age
             })
@@ -43,7 +42,7 @@ export default {
             ctx.emit('changeModifyShow')
         }
         const onSubmit = () => {
-            if (adminInfo.realName === '' || adminInfo.sex === '' || adminInfo.telephone === '' ||
+            if (adminInfo.realName === '' || adminInfo.sexy === '' || adminInfo.telephone === '' ||
                 adminInfo.age === '') {
                 alert('信息不能为空')
 
@@ -53,6 +52,7 @@ export default {
                         if (res.status === 200) {
                             localStorage.setItem('realName', adminInfo.realName)
                             alert('修改成功')
+                            ctx.emit('changeModifyShow')
                         }
                     }).catch(error => {
                         console.log(error);
@@ -62,7 +62,7 @@ export default {
         const input = ref('')
         let adminInfo = reactive({
             realName: '',
-            sex: '',
+            sexy: '',
             telephone: '',
             age: ''
         })

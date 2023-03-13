@@ -38,6 +38,11 @@ export default {
     animation: float 2s infinite ease;
 }
 
+.tableplanet:hover {
+    cursor: pointer;
+}
+
+
 .tableplanet:before {
     content: '展示表格';
     position: absolute;

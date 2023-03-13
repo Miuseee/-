@@ -5,39 +5,18 @@
             <span>登录页</span>
         </div>
         <div class="middle">
-            <Transition name="register">
-                <RegisterView v-if="!show123" @changeShow="changeShow" />
-            </Transition>
-            <Transition name="login">
-                <LoginCard v-if="show123" @changeShow="changeShow" />
-            </Transition>
-
+            <LoginCard />
         </div>
-
     </div>
 </template>
 
 <script>
 import LoginCard from '@/components/Login/LoginCard/LoginCard.vue';
-import RegisterView from '@/components/RegisterCard/RegisterView.vue';
-import { ref } from 'vue'
 export default {
     name: 'LoginView',
     components: {
         LoginCard,
-        RegisterView
     },
-    setup() {
-        let show123 = ref(true)
-        const changeShow = () => {
-            show123.value = !show123.value
-        }
-        return {
-            show123,
-            changeShow
-        }
-    }
-
 }
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class='tableview'>
         <div class="refresh">
             <button class="button2" ref="button" @click="refresh">刷新</button>
         </div>
@@ -34,19 +34,28 @@
                 </tr>
             </tbody>
         </table>
+        <Transition>
+            <GameView v-if="showBeauty" />
+        </Transition>
     </div>
 </template>
 <script>
 import { ref } from 'vue'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, onBeforeUpdate } from 'vue'
 import { getStuInfo, delStuInfo } from '../../../../request/api'
+import GameView from '@/components/Game/GameView.vue'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '@/store'
 import * as XLSX from 'xlsx'
 export default {
     name: 'ListItem',
-    setup(state, context) {
+    components: {
+        GameView
+    },
+    setup(props, context) {
+        let showBeauty = ref(true)
+        // console.log(showStar)
         let arr = ref([])
         let send = ref([])
         let th = ref()
@@ -95,11 +104,13 @@ export default {
             table.value.style.height = '55%'
             table.value.style.transform = 'translateY(0)'
             button.value.style.display = 'block'
+            showBeauty.value = false
         }
         const minusTable = () => {
             table.value.style.height = '100px'
             table.value.style.transform = 'translateY(400px)'
             button.value.style.display = 'none'
+            showBeauty.value = true
         }
         const refresh = () => {
             getStuInfo().then(res => {
@@ -149,6 +160,7 @@ export default {
             minusTable,
             refresh,
             button,
+            showBeauty,
             exportList
         }
     }
@@ -163,7 +175,10 @@ export default {
     left: 0.35%;
     width: 30px;
     height: 30px;
+}
 
+.tableview {
+    width: 100%;
 }
 
 .button {
@@ -295,7 +310,12 @@ tbody>tr:hover {
 }
 
 .export:hover {
-    border: 2px solid lightgrey;
+    border: 1px solid lightgrey;
+    background-color: seashell;
+}
+
+.export:active {
+    border: 2px solid black;
     background-color: seashell;
 }
 
@@ -315,5 +335,29 @@ tbody>tr:hover {
     border-radius: 0;
     background: rgba(157, 155, 162, 0.32);
 
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.word {
+    position: absolute;
+    width: 100%;
+    height: 0;
+    top: 60%;
+    left: 45%;
+    z-index: 0;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: 1s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+    // transform: translateY(300px);
 }
 </style>

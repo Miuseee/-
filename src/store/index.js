@@ -43,7 +43,7 @@ export default createStore({
                             router.push('/home')
                             localStorage.setItem('realName', res.data.data.realName)
                             localStorage.setItem('userName', res.data.data.userName)
-
+                            localStorage.setItem('userType', res.data.data.userType)
                             localStorage.setItem('id', res.data.data.id)
                             this.commit('UpdateAdminInfo', {
                                 userName: res.data.data.userName,

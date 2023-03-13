@@ -63,8 +63,13 @@ export default {
             }).then(res => {
                 if (res.status === 200) {
                     alert('添加成功')
+                    onCancel()
                 }
-            })
+            }).catch(
+                error => {
+                    alert('error')
+                }
+            )
         }
         function onCancel() {
             context.emit('refresh')
@@ -91,6 +96,7 @@ export default {
     opacity: 0.9;
     border-radius: 30px;
     background-color: lightgray;
+    z-index: 100000;
 }
 
 /deep/ .input {

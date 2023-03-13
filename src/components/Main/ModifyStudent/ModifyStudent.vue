@@ -64,6 +64,7 @@ export default {
             }).then((res) => {
                 if (res.data.code === 200);
                 alert('修改成功')
+                context.emit('refresh')
             })
         }
         const onCancel = () => {

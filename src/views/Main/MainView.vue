@@ -1,8 +1,9 @@
 <template>
     <div @click="changeDay" ref="main" class="main">
         <NavBar ref="Navbar" @get2="get2" />
-        <ListVersion @get2="get2" @mouseenter="changeHeight" @getnav="getNav" ref="ListVersion" />
-        <FloatCloud ref="floatCloud" @get2="get2" v-if="!showStar" @addshow="addShow" />
+        <ListVersion @get2="get2" @mouse="changeHeight" @getnav="getNav" ref="ListVersion" />
+        <FloatCloud ref="floatCloud " @tableMinus="minTable" @tablePlanet="changeHeight" @get2="get2" v-if="!showStar"
+            @addshow="addShow" />
         <LiuXing @tableMinus="minTable" @tablePlanet="changeHeight" ref="rocket" v-if="showStar" @addshow="addShow" />
         <SearchStudent v-if="showStar" @get2="get2" />
     </div>
@@ -23,7 +24,8 @@ export default {
         FloatCloud,
         SearchStudent
     },
-    setup() {
+    setup(props) {
+        console.log(props)
         let floatCloud = ref()
         let redplanet = ref()
         let showStar = ref(false)
@@ -46,6 +48,7 @@ export default {
                 Navbar.value.navbar.style.color = 'rgb(55,87,122)'
                 ListVersion.value.addStudent.th.backgroundColor = 'skyblue'
                 showStar.value = false
+                localStorage.setItem('showStar', showStar.value)
             }
             else {
                 style.transition = '0.8s'
@@ -54,6 +57,7 @@ export default {
                 Navbar.value.navbar.style.background = 'black '
                 Navbar.value.navbar.style.color = 'white'
                 showStar.value = true
+                localStorage.setItem('showStar', showStar.value)
             }
         }
         const addShow = () => {

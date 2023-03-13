@@ -41,7 +41,7 @@
         <addPlanet @click="showAdd" />
         <TablePlanet ref="tablePlanet" @emitFather="emitFather" @emitFather1="emitFather1" />
         <auditPlanet />
-
+        <RegisterPlanet />
     </div>
 </template>
 
@@ -51,11 +51,13 @@ import { ref } from 'vue';
 import addPlanet from '@/components/addPlanet/addPlanet.vue'
 import TablePlanet from '@/components/TablePlanet/TablePlanet.vue'
 import auditPlanet from '@/components/auditPlanet/auditPlanet.vue'
+import RegisterPlanet from '../RegisterPlanet/RegisterPlanet.vue';
 export default {
     components: {
         addPlanet,
         TablePlanet,
-        auditPlanet
+        auditPlanet,
+        RegisterPlanet
     },
     setup(p, ctx) {
         let rocketShow = ref()
@@ -81,7 +83,6 @@ export default {
         const emitFather1 = () => {
             ctx.emit('tableMinus')
         }
-
         return {
             rocket,
             rocketShow,

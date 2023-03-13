@@ -1,5 +1,5 @@
 <template>
-    <div class="cloudmove" @mouseenter="showDick" @mousemove="moveDick" @mouseleave="hideDick">
+    <div class="cloudmove">
         <div class="messagecount" ref="message">
             {{ count }}
         </div>
@@ -32,6 +32,9 @@
         </div>
         <div class="cloudshadow twos">
         </div>
+        <div class="arrow" @click="showReg">
+            >
+        </div>
         <div class="yellowlight">
         </div>
         <div class="yellowlight two2">
@@ -42,21 +45,24 @@
         </div>
         <div class="yellowlight five">
         </div>
-        <div class="dick" ref="dick" v-if="showD">
-            <img src="https://a0aehlicpqj1oum171u504ltctun4iiqlfpb6fb3da8o2jiciqrvvrdt.qc.dolfincdnx.net:36356/xdispatch2790db6175b1461f/media.st.dl.eccdnx.com/steamcommunity/public/images/items/1390700/28a30c70a999c0673453a417a9e5df1ab76bc72d.gif?bsreqid=b40a457bfd284d87a8eba7718a3db573&bsxdisp=se"
-                alt="">
+        <div class="sidebar">
+            <button class="show" @click="show">展示</button>
+            <button class="hide" @click="hide">收起</button>
         </div>
         <SearchStudent @get2="get2" class='search' ref="Search" />
+        <RegisterCard class="register" @hideRegTag="hideRegTag" />
     </div>
 </template>
 
 <script>
 import { ref, onMounted, onBeforeMount } from 'vue';
 import SearchStudent from '../Main/SearchStudent/SearchStudent.vue';
+import RegisterCard from '@/components/RegisterCard/RegisterView.vue'
 import { getAllAuditInfo, SubmitModifyAudit, sendEmailToUser } from '@/request/api'
 export default {
     components: {
-        SearchStudent
+        SearchStudent,
+        RegisterCard
     },
     setup(p, ctx) {
         onBeforeMount(() => {
@@ -83,20 +89,17 @@ export default {
         const list = ref()
         const count = ref(0)
         const message = ref()
+        let registerCard = ref()
         const showAdd = () => {
-            console.log(123);
             ctx.emit("addshow")
         }
         const showDick = () => {
             showD.value = true
-            // console.log(Search.value.searchbox.style.background);
-
         }
         const moveDick = (e) => {
-            let x3 = e.clientX - 60 + "px"
-            let y3 = e.clientY - 110 + "px"
+            let x3 = e.clientX - 50 + "px"
+            let y3 = e.clientY - 100 + "px"
             dick.value.style.transform = "translate(" + x3 + "," + y3 + ") "
-
         }
         const hideDick = () => {
             showD.value = false
@@ -154,6 +157,30 @@ export default {
                 }
             })
         }
+        const hideRegTag = () => {
+            document.getElementsByClassName('register')[0].style.transform = 'translateX(100px)'
+            document.getElementsByClassName('arrow')[0].style.transform = 'translateX(15px)'
+            document.getElementsByClassName('arrow')[0].style.display = 'block'
+        }
+        const showReg = () => {
+            if (localStorage.getItem('userType') === '2') {
+                document.getElementsByClassName('register')[0].style.transform = 'translateX(-300px)'
+                document.getElementsByClassName('arrow')[0].style.transform = 'translateX(-250px)'
+                document.getElementsByClassName('arrow')[0].style.display = 'none'
+
+            }
+            else {
+                alert('很抱歉 您还没有权限')
+                return
+            }
+
+        }
+        const show = () => {
+            ctx.emit('tablePlanet')
+        }
+        const hide = () => {
+            ctx.emit('tableMinus')
+        }
         return {
             showAdd,
             showDick,
@@ -170,7 +197,12 @@ export default {
             list,
             message,
             count,
-            submitModify
+            submitModify,
+            registerCard,
+            showReg,
+            hideRegTag,
+            show,
+            hide
         }
 
     }
@@ -178,11 +210,66 @@ export default {
 </script>
 
 <style scoped>
-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+.sidebar {
+    position: absolute;
+    top: 57%;
+    left: 0%;
+    width: 70px;
+    height: 100px;
+    /* opacity: 0.9; */
+    background-color: transparent;
+}
 
+.hide {
+    margin-left: 5px;
+    height: 30px;
+    /* margin-bottom: 20px; */
+}
+
+.show {
+    margin-left: 5px;
+    height: 30px;
+
+}
+
+img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    z-index: -100;
+}
+
+.dick {
+    z-index: -100;
+}
+
+.register {
+    position: absolute;
+    top: 0;
+    right: -300px;
+    transition: 1s;
+}
+
+.arrow {
+    position: absolute;
+    top: 20%;
+    right: 1%;
+    color: white;
+    animation: move 1s infinite ease;
+}
+
+.arrow:hover {
+    cursor: pointer;
+}
+
+.arrow:before {
+    position: absolute;
+    content: '注册新同事';
+    color: white;
+    font-size: 20px;
+    top: 6.5%;
+    left: -110px;
+    width: 100px;
 }
 
 .messagecount {
@@ -221,8 +308,6 @@ td {
     text-align: center;
 }
 
-
-
 .cloudmove {
     position: absolute;
     top: 13%;
@@ -234,7 +319,7 @@ td {
 .cloud {
     position: absolute;
     top: 15%;
-    left: 70.5%;
+    left: 75.5%;
     width: 110px;
     height: 40px;
     border-radius: 30px;
@@ -260,26 +345,6 @@ td {
     z-index: 100;
 }
 
-td:nth-child(5) {
-    width: 80px;
-}
-
-button {
-    display: inline-block;
-    font-size: 18px;
-    border: none;
-    margin-right: 3px;
-    border-radius: 3px;
-}
-
-button:nth-child(1) {
-    background-color: rgb(47, 103, 177);
-}
-
-button:nth-child(2) {
-    background: linear-gradient(rgb(111, 162, 220), rgb(87, 85, 228));
-}
-
 .cloud:after {
     content: "";
     display: block;
@@ -297,7 +362,7 @@ button:nth-child(2) {
 .cloudshadow {
     position: absolute;
     top: 14.5%;
-    left: 60%;
+    left: 75%;
     width: 110px;
     height: 40px;
     border-radius: 30px;
@@ -333,8 +398,24 @@ button:nth-child(2) {
     background-color: lightgray;
 }
 
-.cloud:last-child .cloudshadow:last-child {
-    animation-delay: 2.8s;
+td:nth-child(5) {
+    width: 80px;
+}
+
+button {
+    display: inline-block;
+    font-size: 18px;
+    border: none;
+    margin-right: 3px;
+    border-radius: 3px;
+}
+
+button:nth-child(1) {
+    background-color: rgb(47, 103, 177);
+}
+
+button:nth-child(2) {
+    background: linear-gradient(rgb(111, 162, 220), rgb(87, 85, 228));
 }
 
 .two {
@@ -494,12 +575,16 @@ button:nth-child(2) {
 }
 
 @keyframes move {
-    0% {}
+    0% {
+        transform: translateX(0px);
+    }
 
-    50% {}
+    50% {
+        transform: translateX(8px);
+    }
 
     100% {
-        transform: translateX(1200px);
+        transform: translateX(0px);
     }
 }
 

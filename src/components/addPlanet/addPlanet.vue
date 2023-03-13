@@ -24,6 +24,9 @@ export default {
     animation: upAndDown 2s ease-in-out infinite;
 }
 
+.redplanet:hover {
+    cursor: pointer;
+}
 
 .redplanet:after {
     content: "添加学生";

@@ -27,7 +27,7 @@ export default {
         AddStudent,
         ModifyStudent
     },
-    setup() {
+    setup(props, ctx) {
         const addStudent = ref()
         const isshowed = ref(false)
         const isshowed2 = ref(false)

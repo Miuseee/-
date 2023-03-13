@@ -129,6 +129,10 @@ button:nth-child(1) {
     background-color: rgb(110, 114, 202);
 }
 
+button:hover {
+    background-color: purple;
+}
+
 button:nth-child(2) {
     background: linear-gradient(rgb(212, 70, 127), red);
 }

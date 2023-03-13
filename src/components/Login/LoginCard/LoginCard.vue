@@ -1,19 +1,21 @@
 <template>
-    <div class="logincard">
-        <div class="login">
-            <label class="username" for="username">UserName</label>
-            <input class="usernameinput" v-model="username" type="text" name="username" placeholder="请输入用户名">
-            <label class="password" for="password">Password</label>
-            <input class="passwordinput" v-model="password" type="password" name="password" placeholder="请输入密码"
-                @keydown.enter="loginn">
-            <el-button class="submit" round @click="loginn">登录</el-button>
-            <span><a @click="change">注册</a></span>
+    <div id="app">
+        <vue-particles color="#dedede"></vue-particles>
+
+        <div class="logincard">
+            <div class="login">
+                <label class="username" for="username">UserName</label>
+                <input class="usernameinput" v-model="username" type="text" name="username" placeholder="请输入用户名">
+                <label class="password" for="password">Password</label>
+                <input class="passwordinput" v-model="password" type="password" name="password" placeholder="请输入密码"
+                    @keydown.enter="loginn">
+                <el-button class="submit" round @click="loginn">登录</el-button>
+            </div>
         </div>
     </div>
 </template>
 <script  scoped>
 import { ref } from 'vue'
-import router from '../../../router/index'
 import { useStore } from 'vuex'
 export default {
     name: 'LoginCard',
@@ -38,46 +40,18 @@ export default {
 
             }
         }
-        const change = () => {
-            ctx.emit('changeShow')
-        }
+
         return {
             username,
             password,
             loginn,
-            change
+
         }
     },
 
 }
 </script>
 <style scoped lang="less">
-span {
-    color: gray;
-    position: absolute;
-    cursor: pointer;
-    font-weight: 3000;
-    text-align: right;
-    height: 70px;
-    width: 70px;
-    background: no-repeat url(https://img.alicdn.com/imgextra/i3/O1CN01yz6fEl1MwaRtkJyvf_!!6000000001499-55-tps-70-70.svg);
-    transform: scale(1.2);
-}
-
-span:hover {
-    color: black;
-    transition: 0.3s;
-    font-weight: 800;
-}
-
-span {
-    position: absolute;
-    font-size: 15px;
-    transform: scale(1.5);
-    right: 17px;
-    top: 17px;
-}
-
 input {
     border: none;
     outline: none;

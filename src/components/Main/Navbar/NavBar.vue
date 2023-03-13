@@ -2,15 +2,11 @@
     <div class="all">
         <div class="navbar" ref="navbar">
             <div>
-                <el-avatar @mouseenter="onEnterTd" class="image"
+                <el-avatar ref="img" @mouseenter="onEnterTd" class="image"
                     src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
             </div>
             <el-divider direction="vertical" class="vertical" />
             <span class="text-large font-600 mr-3">新生用户画像分析管理系统</span>
-            <!-- <div class="search">
-                <SearchStudent ref="Search" @get3="get3" />
-            </div> -->
-            <!-- <span class="register"><router-link to="/register">注册</router-link></span> -->
         </div>
         <Transition>
             <PersonCard @changeModifyShow="changeModifyShow" @changeModifyShow1="changeModifyShow1" @mouseleave="onLeaveTd"
@@ -44,6 +40,7 @@ export default {
     },
     setup(a, ctx) {
         let navbar = ref()
+        let img = ref()
         // const reload = inject('reload')
         let Search = ref()
         let realName = ref('')
@@ -54,15 +51,14 @@ export default {
         let showModifyAdmin1 = ref(false)
         const onEnterTd = () => {
             show.value = true
+            img.value.top = '100px'
         }
         const onLeaveTd = () => {
             show.value = false
-
         }
         const get3 = () => {
             console.log('get3')
             ctx.emit('get2')
-
         }
         const showSun = () => {
             showSunny.value = !showSunny.value
@@ -71,7 +67,6 @@ export default {
             showModifyAdmin.value = !showModifyAdmin.value
         }
         const changeModifyShow1 = () => {
-            console.log(123)
             showModifyAdmin1.value = !showModifyAdmin1.value
         }
         return {
@@ -87,11 +82,10 @@ export default {
             showSun,
             showModifyAdmin,
             showModifyAdmin1,
-            navbar
+            navbar,
+            img
         }
     }
-
-
 }
 </script>
 
@@ -109,36 +103,8 @@ a {
     color: black;
 }
 
-div {}
-
 span {
     display: block
-}
-
-.login {
-    flex: 2;
-    font-size: 12px;
-    text-align: center;
-    line-height: 25px;
-}
-
-.login:hover {
-    font-weight: bold;
-    color: black;
-    // border-bottom: 1px gray solid;
-}
-
-.register {
-    flex: 1;
-    text-align: center;
-    font-size: 12px;
-    line-height: 25px;
-}
-
-.register:hover {
-    font-weight: bold;
-    color: black;
-    border-bottom: 1px gray solid;
 }
 
 /deep/ .image {
@@ -147,6 +113,7 @@ span {
     margin-top: 10px;
     margin-left: 10px;
 }
+
 
 .search {
     flex: 1
